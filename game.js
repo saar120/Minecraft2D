@@ -46,7 +46,6 @@ let tempInventory;
 const gameBoard = document.querySelector("#game-board");
 const toolBox = document.querySelector("#tool-box");
 const inventoryShowCase = document.querySelector(".inventory ul");
-console.log(inventoryShowCase);
 
 // Event Listeners
 
@@ -128,7 +127,6 @@ function craft(e) {
   if (!currentTool && !tempInventory) return;
   if (currentTool.classList.contains(tools.axe.className) && e.target.classList.contains(materialObj.tree.className)) {
     materialObj.tree.stock++;
-
     e.target.classList.remove(materialObj.tree.className);
     return;
   }
@@ -137,7 +135,6 @@ function craft(e) {
     e.target.classList.contains(materialObj.leaves.className)
   ) {
     materialObj.leaves.stock++;
-
     e.target.classList.remove(materialObj.leaves.className);
     return;
   }
@@ -146,7 +143,6 @@ function craft(e) {
     e.target.classList.contains(materialObj.rock.className)
   ) {
     materialObj.rock.stock++;
-
     e.target.classList.remove(materialObj.rock.className);
     return;
   }
@@ -155,7 +151,6 @@ function craft(e) {
     e.target.classList.contains(materialObj.grass.className)
   ) {
     materialObj.grass.stock++;
-
     e.target.classList.remove(materialObj.grass.className);
     return;
   }
@@ -164,7 +159,6 @@ function craft(e) {
     e.target.classList.contains(materialObj.ground.className)
   ) {
     materialObj.ground.stock++;
-
     e.target.classList.remove(materialObj.ground.className);
     return;
   }
@@ -190,6 +184,28 @@ function updateInventory() {
     }
   }
 }
+
+// function updateInventory() {
+//   // almost - no delete
+//   const currInv = Array.from(new Set(inventory));
+//   inventoryShowCase.innerHTML = "";
+//   // loops over each inventory item and renders to user if needed;
+//   for (const item of currInv) {
+//     // create li
+//     const li = document.createElement("li");
+//     // create span
+//     const stockNum = document.createElement("span");
+//     li.appendChild(stockNum);
+//     if (materialObj[item].stock > 0) {
+//       stockNum.textContent = materialObj[item].stock;
+//       li.classList = materialObj[item].className;
+//       inventoryShowCase.prepend(li);
+//     } else {
+//       inventoryShowCase.append(li);
+//     }
+//   }
+// }
+
 // function updateInventory() { saar
 //   // loops over each inventory item and renders to user if needed;
 //   for (const item in materialObj) {
