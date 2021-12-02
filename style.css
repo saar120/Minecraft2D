@@ -79,9 +79,34 @@ body {
   height: 151px;
 }
 
-.inventory {
+/* .inventory {
+  
+} */
+
+.inventory > ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+
+.inventory > ul > li {
+  position: relative;
+  margin: 0.5rem 0;
   width: 70px;
   height: 70px;
+  border: 2px solid black;
+}
+.inventory > ul > li > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+  width: 1rem;
+  height: 1.3rem;
 }
 
 .picked-tool {

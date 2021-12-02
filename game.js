@@ -45,7 +45,7 @@ let tempInventory;
 
 const gameBoard = document.querySelector("#game-board");
 const toolBox = document.querySelector("#tool-box");
-const inventoryShowCase = document.querySelector(".inventory");
+const inventoryShowCase = document.querySelector(".inventory ul").children;
 
 // Event Listeners
 
@@ -54,9 +54,13 @@ window.OnLoad = generateGameFromMatrix(baseMatrix);
 gameBoard.addEventListener("click", (e) => {
   console.log("click");
   craft(e);
+  updateInventory();
 });
 
-toolBox.addEventListener("click", saveCurrentTool);
+toolBox.addEventListener("click", (e) => {
+  saveCurrentTool(e);
+  grabFromInventory(e);
+});
 
 // Functions
 
@@ -122,6 +126,7 @@ function craft(e) {
   if (!currentTool && !tempInventory) return;
   if (currentTool.classList.contains(tools.axe.className) && e.target.classList.contains(materialObj.tree.className)) {
     materialObj.tree.stock++;
+
     e.target.classList.remove(materialObj.tree.className);
     return;
   }
@@ -130,6 +135,7 @@ function craft(e) {
     e.target.classList.contains(materialObj.leaves.className)
   ) {
     materialObj.leaves.stock++;
+
     e.target.classList.remove(materialObj.leaves.className);
     return;
   }
@@ -138,6 +144,7 @@ function craft(e) {
     e.target.classList.contains(materialObj.rock.className)
   ) {
     materialObj.rock.stock++;
+
     e.target.classList.remove(materialObj.rock.className);
     return;
   }
@@ -146,6 +153,7 @@ function craft(e) {
     e.target.classList.contains(materialObj.grass.className)
   ) {
     materialObj.grass.stock++;
+
     e.target.classList.remove(materialObj.grass.className);
     return;
   }
@@ -154,8 +162,41 @@ function craft(e) {
     e.target.classList.contains(materialObj.ground.className)
   ) {
     materialObj.ground.stock++;
+
     e.target.classList.remove(materialObj.ground.className);
     return;
   }
   return;
 }
+
+function updateInventory() {
+  // loops over each inventory item and renders to user if needed;
+  for (const item in materialObj) {
+    if (materialObj[item].stock > 0) {
+      let index = materialObj[item].id - 1;
+      inventoryShowCase[index].classList = materialObj[item].className;
+      inventoryShowCase[index].firstChild.textContent = materialObj[item].stock;
+    }
+  }
+}
+
+function grabFromInventory(e) {
+  if (e.target.parentElement === inventoryShowCase.parentElement) {
+    console.log("picked " + e.target.className);
+    // tempInventory = e.target;
+  }
+}
+
+// function updateInventory(e) {
+//   if (materialObj[e.target.className].stock === 1) {
+//     for (li of inventoryShowCase) {
+//       if (li.classList.length === 0) {
+//         li.classList = e.target.className;
+//         li.firstChild.textContent = materialObj[e.target.className].stock;
+//         return;
+//       }
+//     }
+//   } else {
+//     li.firstChild.textContent = materialObj[e.target.className].stock;
+//   }
+// }
