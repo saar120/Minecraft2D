@@ -1,0 +1,53 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  background-color: black;
+}
+
+#game-board {
+  background-color: rgb(21, 147, 215);
+  width: 100vmin;
+  height: 100vmin;
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  grid-template-rows: repeat(18, 1fr);
+}
+
+#tool-box {
+  margin-left: 50px;
+  background-color: rgb(204, 204, 204);
+  width: 20vmin;
+  height: 40vmin;
+  display: flex;
+}
+
+.tree {
+  /* background-color: rgb(174, 74, 12); */
+  background: url("/assets/images/css_sprites.png") -110px -110px;
+}
+
+.leaves {
+  /* background-color: rgb(13, 159, 13); */
+  background: url("/assets/images/css_sprites.png") -210px -10px;
+}
+
+.rock {
+  /* background-color: rgb(136, 132, 132); */
+  background: url("/assets/images/css_sprites.png") -10px -110px;
+}
+
+.ground {
+  background: url("/assets/images/css_sprites.png") -110px -10px;
+}
+
+.grass {
+  /* background-color: rgb(81, 131, 81); */
+  background: url("/assets/images/css_sprites.png") -10px -10px;
+}
+.cloud {
+  background-color: rgb(255, 255, 255);
+}
