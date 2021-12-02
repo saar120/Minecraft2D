@@ -28,7 +28,7 @@ const materialObj = {
   rock: { className: "rock", id: 3, stock: 0 },
   ground: { className: "ground", id: 4, stock: 0 },
   grass: { className: "grass", id: 5, stock: 0 },
-  cloud: { className: "cloud", id: 6, stock: 0 },
+  cloud: { className: "cloud", id: 6, stock: 0, ignore: true },
 };
 
 const tools = {
@@ -45,11 +45,13 @@ let tempInventory;
 
 const gameBoard = document.querySelector("#game-board");
 const toolBox = document.querySelector("#tool-box");
-const inventoryShowCase = document.querySelector(".inventory ul").children;
+const inventoryShowCase = document.querySelector(".inventory ul");
+console.log(inventoryShowCase);
 
 // Event Listeners
 
 window.OnLoad = generateGameFromMatrix(baseMatrix);
+window.OnLoad = updateInventory();
 
 gameBoard.addEventListener("click", (e) => {
   console.log("click");
@@ -59,7 +61,7 @@ gameBoard.addEventListener("click", (e) => {
 
 toolBox.addEventListener("click", (e) => {
   saveCurrentTool(e);
-  grabFromInventory(e);
+  // grabFromInventory(e);
 });
 
 // Functions
@@ -170,33 +172,52 @@ function craft(e) {
 }
 
 function updateInventory() {
+  inventoryShowCase.innerHTML = "";
   // loops over each inventory item and renders to user if needed;
   for (const item in materialObj) {
+    if (materialObj[item].ignore) return;
+    // create li
+    const li = document.createElement("li");
+    // create span
+    const stockNum = document.createElement("span");
+    li.appendChild(stockNum);
     if (materialObj[item].stock > 0) {
-      let index = materialObj[item].id - 1;
-      inventoryShowCase[index].classList = materialObj[item].className;
-      inventoryShowCase[index].firstChild.textContent = materialObj[item].stock;
+      stockNum.textContent = materialObj[item].stock;
+      li.classList = materialObj[item].className;
+      inventoryShowCase.prepend(li);
+    } else {
+      inventoryShowCase.append(li);
     }
   }
 }
-
-function grabFromInventory(e) {
-  if (e.target.parentElement === inventoryShowCase.parentElement) {
-    console.log("picked " + e.target.className);
-    // tempInventory = e.target;
-  }
-}
-
-// function updateInventory(e) {
-//   if (materialObj[e.target.className].stock === 1) {
-//     for (li of inventoryShowCase) {
-//       if (li.classList.length === 0) {
-//         li.classList = e.target.className;
-//         li.firstChild.textContent = materialObj[e.target.className].stock;
-//         return;
-//       }
+// function updateInventory() { saar
+//   // loops over each inventory item and renders to user if needed;
+//   for (const item in materialObj) {
+//     if (materialObj[item].stock > 0) {
+//       let index = materialObj[item].id - 1;
+//       inventoryShowCase[index].classList = materialObj[item].className;
+//       inventoryShowCase[index].firstChild.textContent = materialObj[item].stock;
 //     }
-//   } else {
-//     li.firstChild.textContent = materialObj[e.target.className].stock;
+//   }
+// }
+
+// function updateInventory(e) { omer
+//     if (materialObj[e.target.className].stock === 1) {
+//         for (li of inventoryShowCase) {
+//             if (li.classList.length === 0) {
+//                 li.classList = e.target.className;
+//                 li.firstChild.textContent = materialObj[e.target.className].stock;
+//                 return;
+//               }
+//             }
+//           } else {
+//               li.firstChild.textContent = materialObj[e.target.className].stock;
+//             }
+//           }
+
+// function grabFromInventory(e) {
+//   if (e.target.parentElement === inventoryShowCase.parentElement) {
+//     console.log("picked " + e.target.className);
+//     // tempInventory = e.target;
 //   }
 // }
