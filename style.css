@@ -21,7 +21,7 @@ body {
   margin-left: 50px;
   background-color: rgb(204, 204, 204);
   width: 20vmin;
-  height: 50vmin;
+  height: 80vmin;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,6 +51,12 @@ body {
   background-color: rgb(255, 255, 255);
 }
 
+.tools {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .tool {
   margin: 1rem;
 }
@@ -76,4 +82,8 @@ body {
 .inventory {
   width: 70px;
   height: 70px;
+}
+
+.picked-tool {
+  background-color: rgb(23, 27, 226);
 }

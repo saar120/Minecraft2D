@@ -1,6 +1,6 @@
-const gameBoard = document.querySelector("#game-board");
+// Data
 
-const gameBoardMatrix = [
+const baseMatrix = [
   //18*18
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,50 +23,139 @@ const gameBoardMatrix = [
 ];
 
 const materialObj = {
-  tree: { className: "tree", id: 1 },
-  leaves: { className: "leaves", id: 2 },
-  rock: { className: "rock", id: 3 },
-  ground: { className: "ground", id: 4 },
-  grass: { className: "grass", id: 5 },
-  cloud: { className: "cloud", id: 6 },
+  tree: { className: "tree", id: 1, stock: 0 },
+  leaves: { className: "leaves", id: 2, stock: 0 },
+  rock: { className: "rock", id: 3, stock: 0 },
+  ground: { className: "ground", id: 4, stock: 0 },
+  grass: { className: "grass", id: 5, stock: 0 },
+  cloud: { className: "cloud", id: 6, stock: 0 },
 };
 
-// runs on each row
-gameBoardMatrix.forEach((row, yIndex) => {
-  // runs on each column
-  row.forEach((column, xIndex) => {
-    // save current position id
-    const currentPositionId = gameBoardMatrix[yIndex][xIndex];
-    // create a block
-    const block = document.createElement("div");
-    // add style by id
-    switch (currentPositionId) {
-      case 1:
-        block.classList.add(materialObj.tree.className);
-        break;
-      case 2:
-        block.classList.add(materialObj.leaves.className);
-        break;
-      case 3:
-        block.classList.add(materialObj.rock.className);
-        break;
-      case 4:
-        block.classList.add(materialObj.ground.className);
-        break;
-      case 5:
-        block.classList.add(materialObj.grass.className);
-        break;
-      case 6:
-        block.classList.add(materialObj.cloud.className);
-        break;
-    }
-    // save x and y coordinates
-    block.setAttribute("data-y", yIndex);
-    block.setAttribute("data-x", xIndex);
-    gameBoard.appendChild(block);
-  });
-});
+const tools = {
+  axe: { className: "axe" },
+  pickaxe: { className: "pickaxe" },
+  shovel: { className: "shovel" },
+  picked: { className: "picked-tool" },
+  tool: { className: "tool" },
+};
+let currentTool;
+let tempInventory;
+
+// Selectors
+
+const gameBoard = document.querySelector("#game-board");
+const toolBox = document.querySelector("#tool-box");
+const inventoryShowCase = document.querySelector(".inventory");
+
+// Event Listeners
+
+window.OnLoad = generateGameFromMatrix(baseMatrix);
 
 gameBoard.addEventListener("click", (e) => {
-  console.log(e.target.dataset.x);
+  console.log("click");
+  craft(e);
 });
+
+toolBox.addEventListener("click", saveCurrentTool);
+
+// Functions
+
+function generateGameFromMatrix(matrix) {
+  gameBoard.innerHTML = "";
+  // runs on each row
+  baseMatrix.forEach((row, yIndex) => {
+    // runs on each column
+    row.forEach((column, xIndex) => {
+      // save current position id
+      const currentPositionId = baseMatrix[yIndex][xIndex];
+      // create a block
+      const block = document.createElement("div");
+      // add style by id
+      switch (currentPositionId) {
+        case 1:
+          block.classList.add(materialObj.tree.className);
+          break;
+        case 2:
+          block.classList.add(materialObj.leaves.className);
+          break;
+        case 3:
+          block.classList.add(materialObj.rock.className);
+          break;
+        case 4:
+          block.classList.add(materialObj.ground.className);
+          break;
+        case 5:
+          block.classList.add(materialObj.grass.className);
+          break;
+        case 6:
+          block.classList.add(materialObj.cloud.className);
+          break;
+      }
+      // save x and y coordinates
+      block.setAttribute("data-y", yIndex);
+      block.setAttribute("data-x", xIndex);
+      gameBoard.appendChild(block);
+    });
+  });
+}
+
+function saveCurrentTool(e) {
+  // checks if tool was already picked
+  if (e.target.classList.contains(tools.picked.className)) {
+    currentTool = null;
+    e.target.classList.remove(tools.picked.className);
+    return;
+  }
+  // saves current tool if it was picked
+  if (e.target.classList.contains(tools.tool.className)) {
+    // turn off other tools if selected
+    Array(...e.target.parentElement.children).forEach((child) => child.classList.remove(tools.picked.className));
+    // add picked class to tool
+    e.target.classList.add(tools.picked.className);
+    // set tool as current
+    currentTool = e.target;
+  }
+}
+
+function craft(e) {
+  // check if tool or input was selected
+  if (!currentTool && !tempInventory) return;
+  if (currentTool.classList.contains(tools.axe.className) && e.target.classList.contains(materialObj.tree.className)) {
+    materialObj.tree.stock++;
+    e.target.classList.remove(materialObj.tree.className);
+    return;
+  }
+  if (
+    currentTool.classList.contains(tools.axe.className) &&
+    e.target.classList.contains(materialObj.leaves.className)
+  ) {
+    materialObj.leaves.stock++;
+    e.target.classList.remove(materialObj.leaves.className);
+    return;
+  }
+  if (
+    currentTool.classList.contains(tools.pickaxe.className) &&
+    e.target.classList.contains(materialObj.rock.className)
+  ) {
+    materialObj.rock.stock++;
+    e.target.classList.remove(materialObj.rock.className);
+    return;
+  }
+  if (
+    currentTool.classList.contains(tools.shovel.className) &&
+    e.target.classList.contains(materialObj.grass.className)
+  ) {
+    materialObj.grass.stock++;
+    e.target.classList.remove(materialObj.grass.className);
+    return;
+  }
+  if (
+    currentTool.classList.contains(tools.shovel.className) &&
+    e.target.classList.contains(materialObj.ground.className)
+  ) {
+    materialObj.ground.stock++;
+    e.target.classList.remove(materialObj.ground.className);
+    return;
+  }
+  return;
+}
