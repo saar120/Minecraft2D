@@ -25,7 +25,7 @@ body {
 
 #tool-box {
   margin-left: 50px;
-  background-color: rgb(21, 147, 215);
+  background-color: #343434;
   width: 20vmin;
   height: 100vmin;
   display: flex;

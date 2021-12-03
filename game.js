@@ -35,16 +35,25 @@ const materialObj = {
     ignore: true,
     cursor: 'url("assets/images/forcursor/cloud.png"), auto',
   },
+  empty: { className: "0", id: 0, ignore: true },
 };
 
 const tools = {
   axe: {
     className: "axe",
     canDig: [materialObj.tree.className, materialObj.leaves.className],
-    cursor: 'url("assets/images/stone_axe.png"), auto',
+    cursor: 'url("assets/images/forcursor/axe.png"), auto',
   },
-  pickaxe: { className: "pickaxe", cursor: 'url("assets/images/stone_pickaxe.png"), auto' },
-  shovel: { className: "shovel", cursor: 'url("assets/images/stone_shovel.png"), auto' },
+  pickaxe: {
+    className: "pickaxe",
+    canDig: [materialObj.rock.className],
+    cursor: 'url("assets/images/forcursor/pickaxe.png"), auto',
+  },
+  shovel: {
+    className: "shovel",
+    canDig: [materialObj.grass.className, materialObj.ground.className],
+    cursor: 'url("assets/images/forcursor/shovel.png"), auto',
+  },
   picked: { className: "picked-tool" },
   tool: { className: "tool" },
 };
@@ -178,50 +187,17 @@ function updateInventory() {
 function craft(e) {
   // check if tool or input was selected
   if (currentTool) {
-    if (
-      currentTool.classList.contains(tools.axe.className) &&
-      e.target.classList.contains(materialObj.tree.className)
-    ) {
-      materialObj.tree.stock++;
-      e.target.classList.remove(materialObj.tree.className);
-      return;
-    }
-    if (
-      currentTool.classList.contains(tools.axe.className) &&
-      e.target.classList.contains(materialObj.leaves.className)
-    ) {
-      materialObj.leaves.stock++;
-      e.target.classList.remove(materialObj.leaves.className);
-      return;
-    }
-    if (
-      currentTool.classList.contains(tools.pickaxe.className) &&
-      e.target.classList.contains(materialObj.rock.className)
-    ) {
-      materialObj.rock.stock++;
-      e.target.classList.remove(materialObj.rock.className);
-      return;
-    }
-    if (
-      currentTool.classList.contains(tools.shovel.className) &&
-      e.target.classList.contains(materialObj.grass.className)
-    ) {
-      materialObj.grass.stock++;
-      e.target.classList.remove(materialObj.grass.className);
-      return;
-    }
-    if (
-      currentTool.classList.contains(tools.shovel.className) &&
-      e.target.classList.contains(materialObj.ground.className)
-    ) {
-      materialObj.ground.stock++;
-      e.target.classList.remove(materialObj.ground.className);
+    if (tools[currentTool].canDig.includes(e.target.className)) {
+      materialObj[e.target.className].stock++;
+      e.target.classList.remove(e.target.className);
+      updateMatrix(e);
       return;
     }
   }
   if (tempInventory) {
     if (e.target.classList.length === 0 && e.target !== gameBoard) {
       e.target.classList = tempInventory;
+      updateMatrix(e);
       materialObj[tempInventory].stock--;
       if (materialObj[tempInventory].stock == 0) {
         tempInventory = null;
@@ -236,6 +212,17 @@ function changeCursor() {
   if (tempInventory) {
     gameBoard.style.cursor = materialObj[tempInventory].cursor;
   }
+  if (currentTool) {
+    gameBoard.style.cursor = tools[currentTool].cursor;
+  }
+}
+
+function updateMatrix(e) {
+  if (e.target.className == "") {
+    baseMatrix[e.target.dataset.y][e.target.dataset.x] = 0;
+    return;
+  }
+  baseMatrix[e.target.dataset.y][e.target.dataset.x] = materialObj[e.target.className].id;
 }
 
 // function updateInventory() {
@@ -258,28 +245,3 @@ function changeCursor() {
 //     }
 //   }
 // }
-
-// function updateInventory() { saar
-//   // loops over each inventory item and renders to user if needed;
-//   for (const item in materialObj) {
-//     if (materialObj[item].stock > 0) {
-//       let index = materialObj[item].id - 1;
-//       inventoryShowCase[index].classList = materialObj[item].className;
-//       inventoryShowCase[index].firstChild.textContent = materialObj[item].stock;
-//     }
-//   }
-// }
-
-// function updateInventory(e) { omer
-//     if (materialObj[e.target.className].stock === 1) {
-//         for (li of inventoryShowCase) {
-//             if (li.classList.length === 0) {
-//                 li.classList = e.target.className;
-//                 li.firstChild.textContent = materialObj[e.target.className].stock;
-//                 return;
-//               }
-//             }
-//           } else {
-//               li.firstChild.textContent = materialObj[e.target.className].stock;
-//             }
-//           }
