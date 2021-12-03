@@ -32,7 +32,7 @@ const materialObj = {
 };
 
 const tools = {
-  axe: { className: "axe" },
+  axe: { className: "axe", canDig: [materialObj.tree.className, materialObj.leaves.className] },
   pickaxe: { className: "pickaxe" },
   shovel: { className: "shovel" },
   picked: { className: "picked-tool" },
@@ -46,6 +46,7 @@ let tempInventory;
 const gameBoard = document.querySelector("#game-board");
 const toolBox = document.querySelector("#tool-box");
 const inventoryShowCase = document.querySelector(".inventory ul");
+const toolsShowCase = document.querySelector(".tools");
 
 // Event Listeners
 
@@ -53,18 +54,18 @@ window.OnLoad = generateGameFromMatrix(baseMatrix);
 window.OnLoad = updateInventory();
 
 gameBoard.addEventListener("click", (e) => {
-  console.log("click");
   craft(e);
   updateInventory();
 });
 
 toolBox.addEventListener("click", (e) => {
   saveCurrentTool(e);
-  // grabFromInventory(e);
+  grabFromInventory(e);
 });
 
 // Functions
 
+//matrix initialize
 function generateGameFromMatrix(matrix) {
   gameBoard.innerHTML = "";
   // runs on each row
@@ -105,64 +106,41 @@ function generateGameFromMatrix(matrix) {
 }
 
 function saveCurrentTool(e) {
-  // checks if tool was already picked
-  if (e.target.classList.contains(tools.picked.className)) {
-    currentTool = null;
-    e.target.classList.remove(tools.picked.className);
-    return;
-  }
-  // saves current tool if it was picked
-  if (e.target.classList.contains(tools.tool.className)) {
-    // turn off other tools if selected
-    Array(...e.target.parentElement.children).forEach((child) => child.classList.remove(tools.picked.className));
-    // add picked class to tool
-    e.target.classList.add(tools.picked.className);
-    // set tool as current
-    currentTool = e.target;
+  if (e.target.parentElement === toolsShowCase) {
+    if (e.target.classList.contains(tools.picked.className)) {
+      //unpick if needed
+      clearAllPicked(e);
+      return;
+    }
+    // saves current tool if it was picked
+    if (e.target.classList.contains(tools.tool.className)) {
+      // turn off other tools if selected
+      clearAllPicked(e);
+      // add picked class to tool
+      e.target.classList.add(tools.picked.className);
+      // set tool as current
+      currentTool = e.target;
+    }
   }
 }
 
-function craft(e) {
-  // check if tool or input was selected
-  if (!currentTool && !tempInventory) return;
-  if (currentTool.classList.contains(tools.axe.className) && e.target.classList.contains(materialObj.tree.className)) {
-    materialObj.tree.stock++;
-    e.target.classList.remove(materialObj.tree.className);
-    return;
+function grabFromInventory(e) {
+  if (e.target.parentElement === inventoryShowCase) {
+    if (e.target.classList.contains(tools.picked.className)) {
+      clearAllPicked(e);
+      return;
+    }
+    //unpick if needed
+    clearAllPicked(e);
+    tempInventory = e.target.className;
+    e.target.classList.add(tools.picked.className);
   }
-  if (
-    currentTool.classList.contains(tools.axe.className) &&
-    e.target.classList.contains(materialObj.leaves.className)
-  ) {
-    materialObj.leaves.stock++;
-    e.target.classList.remove(materialObj.leaves.className);
-    return;
-  }
-  if (
-    currentTool.classList.contains(tools.pickaxe.className) &&
-    e.target.classList.contains(materialObj.rock.className)
-  ) {
-    materialObj.rock.stock++;
-    e.target.classList.remove(materialObj.rock.className);
-    return;
-  }
-  if (
-    currentTool.classList.contains(tools.shovel.className) &&
-    e.target.classList.contains(materialObj.grass.className)
-  ) {
-    materialObj.grass.stock++;
-    e.target.classList.remove(materialObj.grass.className);
-    return;
-  }
-  if (
-    currentTool.classList.contains(tools.shovel.className) &&
-    e.target.classList.contains(materialObj.ground.className)
-  ) {
-    materialObj.ground.stock++;
-    e.target.classList.remove(materialObj.ground.className);
-    return;
-  }
-  return;
+}
+
+function clearAllPicked() {
+  tempInventory = null;
+  currentTool = null;
+  document.querySelectorAll(".picked-tool").forEach((picked) => picked.classList.remove(tools.picked.className));
 }
 
 function updateInventory() {
@@ -183,6 +161,60 @@ function updateInventory() {
       inventoryShowCase.append(li);
     }
   }
+}
+
+function craft(e) {
+  // check if tool or input was selected
+  if (currentTool) {
+    if (
+      currentTool.classList.contains(tools.axe.className) &&
+      e.target.classList.contains(materialObj.tree.className)
+    ) {
+      materialObj.tree.stock++;
+      e.target.classList.remove(materialObj.tree.className);
+      return;
+    }
+    if (
+      currentTool.classList.contains(tools.axe.className) &&
+      e.target.classList.contains(materialObj.leaves.className)
+    ) {
+      materialObj.leaves.stock++;
+      e.target.classList.remove(materialObj.leaves.className);
+      return;
+    }
+    if (
+      currentTool.classList.contains(tools.pickaxe.className) &&
+      e.target.classList.contains(materialObj.rock.className)
+    ) {
+      materialObj.rock.stock++;
+      e.target.classList.remove(materialObj.rock.className);
+      return;
+    }
+    if (
+      currentTool.classList.contains(tools.shovel.className) &&
+      e.target.classList.contains(materialObj.grass.className)
+    ) {
+      materialObj.grass.stock++;
+      e.target.classList.remove(materialObj.grass.className);
+      return;
+    }
+    if (
+      currentTool.classList.contains(tools.shovel.className) &&
+      e.target.classList.contains(materialObj.ground.className)
+    ) {
+      materialObj.ground.stock++;
+      e.target.classList.remove(materialObj.ground.className);
+      return;
+    }
+  }
+  if (tempInventory) {
+    if (e.target.classList.length === 0) {
+      e.target.classList = tempInventory;
+      materialObj[tempInventory].stock--;
+      tempInventory = null;
+    }
+  }
+  return;
 }
 
 // function updateInventory() {
@@ -230,10 +262,3 @@ function updateInventory() {
 //               li.firstChild.textContent = materialObj[e.target.className].stock;
 //             }
 //           }
-
-// function grabFromInventory(e) {
-//   if (e.target.parentElement === inventoryShowCase.parentElement) {
-//     console.log("picked " + e.target.className);
-//     // tempInventory = e.target;
-//   }
-// }

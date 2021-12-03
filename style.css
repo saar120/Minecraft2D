@@ -1,3 +1,8 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 body {
   height: 100vh;
   width: 100vw;
@@ -21,7 +26,7 @@ body {
   margin-left: 50px;
   background-color: rgb(21, 147, 215);
   width: 20vmin;
-  height: 80vmin;
+  height: 100vmin;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,24 +64,23 @@ body {
 }
 .tool {
   margin: 1rem;
+  background: 1px solid transparent;
 }
 .pickaxe {
-  background: url("/assets/images/toolsH.png") no-repeat -87px -392px;
-  background-size: 458px 739px;
-  width: 90px;
-  height: 144px;
+  background: url("assets/images/tools.png") no-repeat 0 -168px;
+  width: 52px;
+  height: 52px;
 }
+
 .axe {
-  background: url("/assets/images/toolsH.png") no-repeat 0 -394px;
-  background-size: 458px 739px;
-  width: 70px;
-  height: 142px;
+  background: url("assets/images/tools.png") no-repeat -192px -164px;
+  width: 48px;
+  height: 56px;
 }
 .shovel {
-  background: url("/assets/images/toolsH.png") no-repeat -297px -385px;
-  background-size: 458px 739px;
-  width: 57px;
-  height: 151px;
+  background: url("assets/images/tools.png") no-repeat -64px -168px;
+  width: 52px;
+  height: 52px;
 }
 
 /* .inventory {
@@ -95,8 +99,8 @@ body {
 .inventory > ul > li {
   position: relative;
   margin: 0.5rem 0;
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   border: 2px solid black;
 }
 .inventory > ul > li > span {
@@ -105,10 +109,11 @@ body {
   left: 0;
   background-color: black;
   color: white;
-  width: 1rem;
-  height: 1.3rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .picked-tool {
-  background-color: rgb(23, 27, 226);
+  border: 3px solid rgb(216, 27, 27) !important;
 }
