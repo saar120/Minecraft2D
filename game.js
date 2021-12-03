@@ -23,18 +23,28 @@ const baseMatrix = [
 ];
 
 const materialObj = {
-  tree: { className: "tree", id: 1, stock: 0 },
-  leaves: { className: "leaves", id: 2, stock: 0 },
-  rock: { className: "rock", id: 3, stock: 0 },
-  ground: { className: "ground", id: 4, stock: 0 },
-  grass: { className: "grass", id: 5, stock: 0 },
-  cloud: { className: "cloud", id: 6, stock: 0, ignore: true },
+  tree: { className: "tree", id: 1, stock: 0, cursor: 'url("assets/images/forcursor/wood.png"), auto' },
+  leaves: { className: "leaves", id: 2, stock: 0, cursor: 'url("assets/images/forcursor/leaves.png"), auto' },
+  rock: { className: "rock", id: 3, stock: 0, cursor: 'url("assets/images/forcursor/rock.png"), auto' },
+  ground: { className: "ground", id: 4, stock: 0, cursor: 'url("assets/images/forcursor/soil.png"), auto' },
+  grass: { className: "grass", id: 5, stock: 0, cursor: 'url("assets/images/forcursor/grass.png"), auto' },
+  cloud: {
+    className: "cloud",
+    id: 6,
+    stock: 0,
+    ignore: true,
+    cursor: 'url("assets/images/forcursor/cloud.png"), auto',
+  },
 };
 
 const tools = {
-  axe: { className: "axe", canDig: [materialObj.tree.className, materialObj.leaves.className] },
-  pickaxe: { className: "pickaxe" },
-  shovel: { className: "shovel" },
+  axe: {
+    className: "axe",
+    canDig: [materialObj.tree.className, materialObj.leaves.className],
+    cursor: 'url("assets/images/stone_axe.png"), auto',
+  },
+  pickaxe: { className: "pickaxe", cursor: 'url("assets/images/stone_pickaxe.png"), auto' },
+  shovel: { className: "shovel", cursor: 'url("assets/images/stone_shovel.png"), auto' },
   picked: { className: "picked-tool" },
   tool: { className: "tool" },
 };
@@ -56,11 +66,13 @@ window.OnLoad = updateInventory();
 gameBoard.addEventListener("click", (e) => {
   craft(e);
   updateInventory();
+  changeCursor();
 });
 
 toolBox.addEventListener("click", (e) => {
   saveCurrentTool(e);
   grabFromInventory(e);
+  changeCursor();
 });
 
 // Functions
@@ -69,11 +81,11 @@ toolBox.addEventListener("click", (e) => {
 function generateGameFromMatrix(matrix) {
   gameBoard.innerHTML = "";
   // runs on each row
-  baseMatrix.forEach((row, yIndex) => {
+  matrix.forEach((row, yIndex) => {
     // runs on each column
     row.forEach((column, xIndex) => {
       // save current position id
-      const currentPositionId = baseMatrix[yIndex][xIndex];
+      const currentPositionId = matrix[yIndex][xIndex];
       // create a block
       const block = document.createElement("div");
       // add style by id
@@ -119,7 +131,7 @@ function saveCurrentTool(e) {
       // add picked class to tool
       e.target.classList.add(tools.picked.className);
       // set tool as current
-      currentTool = e.target;
+      currentTool = e.target.classList[0];
     }
   }
 }
@@ -208,13 +220,22 @@ function craft(e) {
     }
   }
   if (tempInventory) {
-    if (e.target.classList.length === 0) {
+    if (e.target.classList.length === 0 && e.target !== gameBoard) {
       e.target.classList = tempInventory;
       materialObj[tempInventory].stock--;
-      tempInventory = null;
+      if (materialObj[tempInventory].stock == 0) {
+        tempInventory = null;
+      }
     }
   }
   return;
+}
+
+function changeCursor() {
+  gameBoard.style.cursor = null;
+  if (tempInventory) {
+    gameBoard.style.cursor = materialObj[tempInventory].cursor;
+  }
 }
 
 // function updateInventory() {

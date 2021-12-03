@@ -20,6 +20,7 @@ body {
   display: grid;
   grid-template-columns: repeat(18, 1fr);
   grid-template-rows: repeat(18, 1fr);
+  cursor: url("assets/images/smallSteve.png"), auto;
 }
 
 #tool-box {
@@ -31,26 +32,27 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .tree {
-  background: url("/assets/images/css_sprites.png") -110px -110px;
+  background: url("/assets/images/matreials/wood.png") 0 0 / cover no-repeat;
 }
 
 .leaves {
-  background: url("/assets/images/css_sprites.png") -210px -10px;
+  background: url("/assets/images/matreials/leaves.png") 0 0 / cover no-repeat;
 }
 
 .rock {
-  background: url("/assets/images/css_sprites.png") -10px -110px;
+  background: url("/assets/images/matreials/rock.png") 0 0 / cover no-repeat;
 }
 
 .ground {
-  background: url("/assets/images/css_sprites.png") -110px -10px;
+  background: url("/assets/images/matreials/ground.png") 0 0 / cover no-repeat;
 }
 
 .grass {
-  background: url("/assets/images/css_sprites.png") -10px -10px;
+  background: url("/assets/images/matreials/grass.png") 0 0 / cover no-repeat;
 }
 .cloud {
   background-color: rgb(255, 255, 255);
@@ -82,10 +84,6 @@ body {
   width: 52px;
   height: 52px;
 }
-
-/* .inventory {
-  
-} */
 
 .inventory > ul {
   display: flex;
