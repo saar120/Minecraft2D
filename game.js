@@ -57,6 +57,7 @@ const tools = {
   picked: { className: "picked-tool" },
   tool: { className: "tool" },
 };
+
 let currentTool;
 let tempInventory;
 
