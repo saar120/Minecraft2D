@@ -5,16 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <script defer src="/game.js"></script>
     <title>Minecraft 2D</title>
   </head>
   <body>
+    <div id="splash-screen">
+      <h2>Welcome To Minecraft</h2>
+      <button class="start-btn btn">Press To Play</button>
+    </div>
+    <div class="side-bar side"><button class="reset-btn btn">Reset Game</button></div>
     <div id="game-board"></div>
-    <div id="tool-box">
+    <div id="tool-box" class="side">
       <div class="tools">
-        <div class="shovel tool"></div>
-        <div class="axe tool"></div>
-        <div class="pickaxe tool"></div>
+        <div class="shovel tool">
+          <div class="shovel-img img"></div>
+          Shovel
+        </div>
+        <div class="axe tool">
+          <div class="axe-img img"></div>
+          Axe
+        </div>
+        <div class="pickaxe tool">
+          <div class="pickaxe-img img"></div>
+          Pickaxe
+        </div>
       </div>
       <div class="inventory">
         <ul></ul>

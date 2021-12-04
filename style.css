@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "VT323", monospace;
 }
 body {
   height: 100vh;
@@ -13,9 +14,30 @@ body {
   background-color: black;
 }
 
+#splash-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: url(/assets/images/bgImage.png) no-repeat center center / cover;
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+}
+
+#splash-screen h2 {
+  font-size: 6rem;
+  color: #8b8b8b;
+  -webkit-text-stroke: 1px black;
+  margin: 3rem;
+}
+
 #game-board {
-  background-color: rgb(21, 147, 215);
-  width: 100vmin;
+  background-color: #8cafff;
+  width: 110vmin;
   height: 100vmin;
   display: grid;
   grid-template-columns: repeat(18, 1fr);
@@ -23,9 +45,9 @@ body {
   cursor: url("assets/images/smallSteve.png"), auto;
 }
 
-#tool-box {
-  margin-left: 50px;
-  background-color: #343434;
+.side {
+  margin: 0 3vmin;
+  background-color: #c6c6c6;
   width: 20vmin;
   height: 100vmin;
   display: flex;
@@ -35,6 +57,14 @@ body {
   cursor: pointer;
 }
 
+.btn {
+  height: 7vmin;
+  width: 10vmin;
+  font-size: 1.2rem;
+  background-color: #8b8b8b;
+  box-shadow: 0px 0px 0px 4px #a0a0a0, inset 0px 10px 2px -8px #141414, 5px 5px 15px 5px rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
 .tree {
   background: url("/assets/images/matreials/wood.png") 0 0 / cover no-repeat;
 }
@@ -65,24 +95,36 @@ body {
   align-items: center;
 }
 .tool {
-  margin: 1rem;
-  background: 1px solid transparent;
-}
-.pickaxe {
-  background: url("assets/images/tools.png") no-repeat 0 -168px;
-  width: 52px;
-  height: 52px;
+  background: 3px solid transparent;
+  height: 16.5vmin;
+  width: 10vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  border: 2px solid transparent;
+  background-color: #8b8b8b;
+  box-shadow: 0px 0px 0px 2px #a0a0a0, inset 0px 10px 27px -8px #141414, 5px 5px 15px 5px rgba(0, 0, 0, 0);
 }
 
-.axe {
-  background: url("assets/images/tools.png") no-repeat -192px -164px;
-  width: 48px;
-  height: 56px;
+.img {
+  height: 9vmin;
+  width: 7vmin;
+  margin: 1rem 0;
+  pointer-events: none;
 }
-.shovel {
-  background: url("assets/images/tools.png") no-repeat -64px -168px;
-  width: 52px;
-  height: 52px;
+.shovel-img {
+  background: url("/assets/images/tools/shovel.png") center center / cover no-repeat;
+}
+
+.axe-img {
+  background: url("/assets/images/tools/axe.png") center center / cover no-repeat;
+}
+
+.pickaxe-img {
+  background: url("/assets/images/tools/pickaxe.png") center center / cover no-repeat;
 }
 
 .inventory > ul {
@@ -97,9 +139,10 @@ body {
 .inventory > ul > li {
   position: relative;
   margin: 0.5rem 0;
-  width: 50px;
-  height: 50px;
-  border: 2px solid black;
+  width: 6vmin;
+  height: 6vmin;
+  border: 2px solid transparent;
+  box-shadow: 0px 0px 0px 2px #a0a0a0, inset 0px 10px 27px -8px #141414, 5px 5px 15px 5px rgba(0, 0, 0, 0);
 }
 .inventory > ul > li > span {
   position: absolute;
@@ -113,5 +156,18 @@ body {
 }
 
 .picked-tool {
-  border: 3px solid rgb(216, 27, 27) !important;
+  box-shadow: 0px 0px 0px 2px red, inset 0px 10px 27px -8px #141414, 5px 5px 15px 5px rgba(0, 0, 0, 0) !important;
+}
+
+#hidden {
+  display: none;
+}
+/* animation */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

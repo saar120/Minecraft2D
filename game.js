@@ -67,6 +67,8 @@ const gameBoard = document.querySelector("#game-board");
 const toolBox = document.querySelector("#tool-box");
 const inventoryShowCase = document.querySelector(".inventory ul");
 const toolsShowCase = document.querySelector(".tools");
+const resetButton = document.querySelector(".reset-btn");
+const startButton = document.querySelector(".start-btn");
 
 // Event Listeners
 
@@ -85,7 +87,18 @@ toolBox.addEventListener("click", (e) => {
   changeCursor();
 });
 
+resetButton.addEventListener("click", resetGame);
+
+startButton.addEventListener("click", hideSplashScreen);
+
 // Functions
+
+function hideSplashScreen() {
+  startButton.parentElement.style.animation = "fadeOut 2s";
+  setTimeout(() => {
+    startButton.parentElement.id = "hidden";
+  }, 1900);
+}
 
 //matrix initialize
 function generateGameFromMatrix(matrix) {
