@@ -191,14 +191,14 @@ function craft(e) {
     if (tools[currentTool].canDig.includes(e.target.className)) {
       materialObj[e.target.className].stock++;
       e.target.classList.remove(e.target.className);
-      updateMatrix(e);
+      // updateMatrix(e);
       return;
     }
   }
   if (tempInventory) {
     if (e.target.classList.length === 0 && e.target !== gameBoard) {
       e.target.classList = tempInventory;
-      updateMatrix(e);
+      // updateMatrix(e);
       materialObj[tempInventory].stock--;
       if (materialObj[tempInventory].stock == 0) {
         tempInventory = null;
@@ -224,6 +224,20 @@ function updateMatrix(e) {
     return;
   }
   baseMatrix[e.target.dataset.y][e.target.dataset.x] = materialObj[e.target.className].id;
+}
+
+function clearStock() {
+  for (material in materialObj) {
+    materialObj[material].stock = 0;
+  }
+}
+
+function resetGame() {
+  generateGameFromMatrix(baseMatrix);
+  clearStock();
+  clearAllPicked();
+  updateInventory();
+  changeCursor();
 }
 
 // function updateInventory() {
