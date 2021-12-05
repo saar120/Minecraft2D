@@ -76,6 +76,7 @@ window.OnLoad = generateGameFromMatrix(baseMatrix);
 window.OnLoad = updateInventory();
 
 gameBoard.addEventListener("click", (e) => {
+  if (e.target === gameBoard) return;
   craft(e);
   updateInventory();
   changeCursor();
@@ -208,8 +209,8 @@ function craft(e) {
       return;
     }
   }
-  if (tempInventory) {
-    if (e.target.classList.length === 0 && e.target !== gameBoard) {
+  if (tempInventory && checkAllSides(e)) {
+    if (e.target.classList.length === 0) {
       e.target.classList = tempInventory;
       // updateMatrix(e);
       materialObj[tempInventory].stock--;
@@ -253,23 +254,22 @@ function resetGame() {
   changeCursor();
 }
 
-// function updateInventory() {
-//   // almost - no delete
-//   const currInv = Array.from(new Set(inventory));
-//   inventoryShowCase.innerHTML = "";
-//   // loops over each inventory item and renders to user if needed;
-//   for (const item of currInv) {
-//     // create li
-//     const li = document.createElement("li");
-//     // create span
-//     const stockNum = document.createElement("span");
-//     li.appendChild(stockNum);
-//     if (materialObj[item].stock > 0) {
-//       stockNum.textContent = materialObj[item].stock;
-//       li.classList = materialObj[item].className;
-//       inventoryShowCase.prepend(li);
-//     } else {
-//       inventoryShowCase.append(li);
-//     }
-//   }
-// }
+function getBlockByXY(x, y) {
+  return document.querySelector(`[data-x='${x}'][data-y='${y}']`);
+}
+
+//TODO fix cloud insert
+function checkAllSides(e) {
+  const x = parseInt(e.target.dataset.x),
+    y = parseInt(e.target.dataset.y);
+  let sides = [getBlockByXY(x, y - 1), getBlockByXY(x, y + 1), getBlockByXY(x - 1, y), getBlockByXY(x + 1, y)];
+
+  for (side of sides) {
+    if (!side) {
+      sides.splice(sides.indexOf(side), 1);
+    } else {
+      if (side.classList.length > 0) return true;
+    }
+  }
+  return false;
+}
