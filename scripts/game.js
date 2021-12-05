@@ -21,6 +21,7 @@ const baseMatrix = [
   [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
   [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 ];
+const gridSize = 18;
 
 const materialObj = {
   tree: { className: "tree", id: 1, stock: 0, cursor: 'url("assets/images/forcursor/wood.png"), auto' },
@@ -62,8 +63,10 @@ let currentTool;
 let tempInventory;
 
 // Selectors
-
 const gameBoard = document.querySelector("#game-board");
+gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+gameBoard.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+
 const toolBox = document.querySelector("#tool-box");
 const inventoryShowCase = document.querySelector(".inventory ul");
 const toolsShowCase = document.querySelector(".tools");
