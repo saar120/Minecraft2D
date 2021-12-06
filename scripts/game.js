@@ -23,7 +23,7 @@ const baseMatrix = [
 ];
 const gridSize = 18;
 
-const materialObj = {
+let materialObj = {
   tree: { className: "tree", id: 1, stock: 0, cursor: 'url("assets/images/forcursor/wood.png"), auto' },
   leaves: { className: "leaves", id: 2, stock: 0, cursor: 'url("assets/images/forcursor/leaves.png"), auto' },
   rock: { className: "rock", id: 3, stock: 0, cursor: 'url("assets/images/forcursor/rock.png"), auto' },
@@ -208,14 +208,14 @@ function craft(e) {
     if (tools[currentTool].canDig.includes(e.target.className)) {
       materialObj[e.target.className].stock++;
       e.target.classList.remove(e.target.className);
-      // updateMatrix(e);
+      updateMatrix(e);
       return;
     }
   }
   if (tempInventory && checkAllSides(e)) {
     if (e.target.classList.length === 0) {
       e.target.classList = tempInventory;
-      // updateMatrix(e);
+      updateMatrix(e);
       materialObj[tempInventory].stock--;
       if (materialObj[tempInventory].stock == 0) {
         tempInventory = null;
@@ -275,4 +275,17 @@ function checkAllSides(e) {
     }
   }
   return false;
+}
+
+function saveGame() {
+  window.localStorage.setItem("savedGameMap", JSON.stringify(baseMatrix));
+  window.localStorage.setItem("savedGameInventory", JSON.stringify(materialObj));
+}
+
+function loadGame() {
+  const savedGameMap = JSON.parse(window.localStorage.getItem("savedGameMap"));
+  const savedGameInventory = JSON.parse(window.localStorage.getItem("savedGameInventory"));
+  generateGameFromMatrix(savedGameMap);
+  materialObj = savedGameInventory;
+  updateInventory();
 }
